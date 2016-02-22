@@ -1,0 +1,7 @@
+activity_main is the first page for the application.It contains a sign up button. 
+
+First, we get the sim card ID of the user opening the application.
+Second, we compares this ID with all the IDs in our database.
+If the ID is found in the database..so the user redirects automatic to home page of the user. if not, he stills in the activity_main page where it has a sign up button and he could clicks on it.
+
+If the user clicks the sign up button, he will be redirected to sign up page where he has only to fill in his name.Clicks submit.then he will be redirected to his homepage.
