@@ -6,91 +6,296 @@ import android.database.Cursor;
 import android.content.Context;
 import android.content.ContentValues;
 
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Database extends SQLiteOpenHelper
+public class Database
 {
-    private static final int DATABASE_VERSION = 2;
-    private static final String DATABASE_NAME = "myappdatabase.db";
-    public static final String TABLE_USERS = "user" ;
+    public ArrayList listOfPhoneid = new ArrayList();
+    public ArrayList listOfCategoryNames = new ArrayList();
+    public ArrayList listOfPlaceDetails = new ArrayList();
+    public ArrayList<ArrayList<String>> placesGivenCategory = new ArrayList();
 
-    public static final String column_phoneid = "_phoneid";
-    public static final String column_NAME = "name";
-    public static final String column_EMAIL = "email";
-    public static final String column_ADDRESS = "address";
-    public static final String column_GENDER = "gender";
-
-
-
-    public Database(Context context, String name, SQLiteDatabase.CursorFactory factory, int version)
+    public Database()
     {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db)
+    public Boolean SignUp(final String phoneid, final String name)
     {
-        String query = "create table "+TABLE_USERS+"("+
-                column_phoneid+" TEXT PRIMARY KEY ,"+
-                column_NAME+" TEXT ,"+
-                column_EMAIL+" TEXT ,"+
-                column_ADDRESS+" TEXT ,"+
-                column_GENDER+" TEXT "+
-                ");";
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            .add("phoneid", phoneid)
+                            .add("name", name)
+                            .build();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/signup.php").post(body).build();
+                    Call call = client.newCall(request);
+                    call.enqueue(new Callback() {
 
-        db.execSQL(query);
-    }
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            System.out.println("Registration Error" + e.getMessage());
+                        }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-    {
-        db.execSQL("DROP TABLE IF EXISTS "+TABLE_USERS);
-        onCreate(db);
-    }
+                        @Override
+                        public void onResponse(Response response) throws IOException {
+                            try {
+                                String resp = response.body().string();
+                                System.out.println(resp);
 
-    public Boolean SignUp(String phoneid, String name, String email, String address, String gender)
-    {
-        ContentValues values = new ContentValues();
-        values.put(column_phoneid, phoneid);
-        values.put(column_NAME, name);
-        values.put(column_EMAIL, email);
-        values.put(column_ADDRESS, address);
-        values.put(column_GENDER, gender);
+                            } catch (IOException e) {
+                                // Log.e(TAG_REGISTER, "Exception caught: ", e);
+                                System.out.println("Exception caught" + e.getMessage());
+                            }
+                        }
+                    });
 
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_USERS, null, values);
-        db.close();
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+
+
+
 
         return true;
     }
 
-    public ArrayList SelectPhoneId()
-    {
-        ArrayList list = new ArrayList();
+    public ArrayList SelectPhoneId() throws InterruptedException {
 
-        String dbString = "";
-        SQLiteDatabase db = getReadableDatabase(); //db object here = db we are going to write to
-        String query = "select * from " + TABLE_USERS + " ";//1 EVERY CONDITION IS MESSED
+        //list containing all phone ids only
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
 
-        Cursor c = db.rawQuery(query, null);
 
-        //move to the first row in ur results
-        // c.moveToFirst();
+                    ArrayList tempList = new ArrayList();
+                    OkHttpClient client = new OkHttpClient();
 
-        if (c.moveToFirst()) {
-            do {
-                //assing values
-                String column1 = c.getString(0);
+                            Request request = new Request.Builder()
+                            .url("http://10.0.2.2/AroundTheBlock/selectphoneid.php")
+                                    .build();
 
-                dbString = column1;
-                list.add(dbString);
+                    Response response = client.newCall(request).execute();
+//                        System.out.println("the answer is "+response.body().string());
 
-            } while (c.moveToNext());
+                    String jsonData = response.body().string();
+                    System.out.println("data hyaa "+jsonData);
+
+                    JSONObject rootObject = new JSONObject(jsonData);
+                    JSONArray array = rootObject.getJSONArray("users");
+
+                    for(int i=0;i<array.length();i++)
+                    {
+                            System.out.println(array.getString(i));
+                            listOfPhoneid.add(array.getString(i));
+                    }
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
         }
 
-        db.close();
-        System.out.println("el lista hya \n"+list);
+        System.out.println("the listaaaaaaaaaaaa " + listOfPhoneid);
+        return listOfPhoneid;
+    }
 
-        return list;
+    public ArrayList<ArrayList<String>> SelectPlacesGivenCategory(final String selectedCategory)
+    {
+        //requires here 2 threads.. one to send selected category to be used in where condition.. and other to retrieve data
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            .add("selectedcategory", selectedCategory)
+                            .build();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacesgivencategory.php").post(body).build();
+
+                    Response response = client.newCall(request).execute();
+
+                    String jsonData = response.body().string();
+                    System.out.println("data hyaa fil places  "+jsonData);
+
+                    JSONObject rootObject = new JSONObject(jsonData);
+                    JSONArray array = rootObject.getJSONArray("users");
+
+                    for(int i=0;i<array.length();i++)
+                    {
+                        JSONArray array2 = array.getJSONArray(i);
+                        ArrayList<String> tempList = new ArrayList<>();
+                        for(int j=0;j<array2.length();j++)
+                        {
+                            //System.out.println("PLACES AAAARE "+array2.getString(j)+ " \n ");
+                            tempList.add(array2.getString(j));
+                        }
+                        placesGivenCategory.add(tempList);
+                    }
+
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+        return placesGivenCategory;
+    }
+
+    public ArrayList<String> SelectCategoryName()
+    {
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+
+
+                    ArrayList tempList = new ArrayList();
+                    OkHttpClient client = new OkHttpClient();
+
+                    Request request = new Request.Builder()
+                            .url("http://10.0.2.2/AroundTheBlock/selectcategorynames.php")
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+//                        System.out.println("the answer is "+response.body().string());
+
+                    String jsonData = response.body().string();
+                    System.out.println("data hyaa "+jsonData);
+
+                    JSONObject rootObject = new JSONObject(jsonData);
+                    JSONArray array = rootObject.getJSONArray("users");
+
+                    for(int i=0;i<array.length();i++)
+                    {
+                        System.out.println(array.getString(i));
+                        listOfCategoryNames.add(array.getString(i));
+                    }
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+        System.out.println("the listaaaaaaaaaaaa " + listOfCategoryNames);
+
+        return listOfCategoryNames;
+    }
+
+    public ArrayList<String> SelectPlaceDetailsGivenName(final String selectedPlace)
+    {
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            .add("selectedPlace", selectedPlace)
+                            .build();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
+
+                    Response response = client.newCall(request).execute();
+
+                    String jsonData = response.body().string();
+                    System.out.println("data hyaa fil places  "+jsonData);
+
+                    JSONObject rootObject = new JSONObject(jsonData);
+                    JSONArray array = rootObject.getJSONArray("users");
+
+                    for(int i=0;i<array.length();i++)
+                    {
+                        JSONArray array2 = array.getJSONArray(i);
+                        for(int j=0;j<array2.length();j++)
+                        {
+                            System.out.println("PLACES DETAILS ARE " + array2.getString(j) + " \n ");
+                            listOfPlaceDetails.add(array2.getString(j));
+                        }
+
+                    }
+
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+        return listOfPlaceDetails;
     }
 }

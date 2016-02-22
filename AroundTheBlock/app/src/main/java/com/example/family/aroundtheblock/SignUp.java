@@ -32,15 +32,10 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         nameInput = (EditText)findViewById(R.id.nameInput) ;
-        emailInput = (EditText) findViewById(R.id.emailInput);
-        addressInput = (EditText)findViewById(R.id.addressInput);
-        genderInput = (RadioGroup) findViewById(R.id.gender);
-
         TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         android_id = tm.getSimSerialNumber();
 
-        db = new Database(this, null, null, 2);
-
+        db = new Database();
     }
 
     public void SignUpButtonClicked(View view)
@@ -49,31 +44,13 @@ public class SignUp extends AppCompatActivity {
         phoneid = android_id;
 
         String name = nameInput.getText().toString();
-        String email = emailInput.getText().toString();
-        String address = addressInput.getText().toString();
 
-
-//        int radioButtonID = genderInput.getCheckedRadioButtonId();
-//        View radioButton = genderInput.findViewById(radioButtonID);
-//        int idx = genderInput.indexOfChild(radioButton);
-//
-//        RadioButton r = (RadioButton)  radioButton.getChildAt(idx);
-//        String selectedtext = r.getText().toString();
-
-        RadioButton rb = (RadioButton) findViewById(genderInput.getCheckedRadioButtonId());
-
-        String gender = rb.getText().toString();
-
-        Boolean result = db.SignUp(phoneid, name, email, address, gender);
+        Boolean result = db.SignUp(phoneid, name);
 
         if(result)
         {
-            Intent intent = new Intent(this, HomePage.class);
+            Intent intent = new Intent(this, LocationsHomePage.class);
             intent.putExtra("phoneid", phoneid);
-            intent.putExtra("name", name);
-            intent.putExtra("email", email);
-            intent.putExtra("address", address);
-            intent.putExtra("gender",gender);
 
             startActivity(intent);
         }
