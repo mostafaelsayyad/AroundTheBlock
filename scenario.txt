@@ -1,0 +1,8 @@
+scenario for rating & review feature:
+=====================================
+When the user clicks on a certain place(either from search bar or from the category drop down menu) he will go to a page that displays all the information details about this place.
+
+In this page, previous ratings for this place will be displayed.
+He could rate this place from 1 stars (worst place) to 5 stars (best place).
+
+Also he could write a comment and tell his opinion about his place.Previous comments will be displayed.
