@@ -25,10 +25,10 @@
         android:id="@+id/linearLayout">
 
 
-        <EditText
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/search"
+            android:id="@+id/autoCompleteTextView1"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:hint="Search Any Place"

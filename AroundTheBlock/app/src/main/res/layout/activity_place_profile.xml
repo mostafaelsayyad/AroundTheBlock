@@ -11,6 +11,91 @@
 
     tools:context="com.example.family.aroundtheblock.PlaceProfile">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingLeft="20dp"
+            >
+
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name: "
+                android:textSize="28sp"
+                android:layout_gravity="center_horizontal" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/nameTextEmptySpace"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="" />-->
+
+            <TextView
+                android:id="@+id/addressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address: "
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@android:dimen/app_icon_size"
+                android:textSize="28sp"
+                />
+
+            <!--<TextView-->
+                <!--android:id="@+id/categoryTextEmptySpace"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="" />-->
+
+            <TextView
+                android:id="@+id/phoneText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone: "
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@android:dimen/app_icon_size"
+                android:textSize="28sp"
+                />
+
+            <TextView
+                android:id="@+id/categoryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category: "
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@android:dimen/app_icon_size"
+                android:textSize="28sp"
+                />
+
+            <TextView
+                android:id="@+id/websiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Website: "
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@android:dimen/app_icon_size"
+                android:textSize="28sp"
+                />
+
+            <TextView
+                android:id="@+id/emailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email: "
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@android:dimen/app_icon_size"
+                android:textSize="28sp"
+                />
+
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

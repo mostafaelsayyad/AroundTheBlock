@@ -62,33 +62,9 @@ public class SearchResults extends AppCompatActivity {
         ArrayList<String>placeDetails = new ArrayList<String>();
         placeDetails = db.SelectPlaceDetailsGivenName(selectedFromList);
 
-        System.out.println("place detaillllls hna "+placeDetails);
-
-        String placeid = placeDetails.get(0).toString();
-        String placeName = placeDetails.get(1).toString();
-        String address = placeDetails.get(2).toString();
-        String phonenumber = placeDetails.get(3).toString();
-        String latitude = placeDetails.get(4).toString();
-        String longitude = placeDetails.get(5).toString();
-        String category = placeDetails.get(6).toString();
-        String apprating = placeDetails.get(7).toString();
-        String prices = placeDetails.get(8).toString();
-        String website = placeDetails.get(9).toString();
-        String email = placeDetails.get(10).toString();
-
         Intent intent = new Intent(SearchResults.this, PlaceProfile.class);
+        intent.putStringArrayListExtra("placeDetails", placeDetails);
 
-        intent.putExtra("placeid", placeid);
-        intent.putExtra("placeName", placeName);
-        intent.putExtra("address", address);
-        intent.putExtra("phonenumber", phonenumber);
-        intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitude);
-        intent.putExtra("category", category);
-        intent.putExtra("apprating", apprating);
-        intent.putExtra("prices", prices);
-        intent.putExtra("website", website);
-        intent.putExtra("email", email);
         startActivity(intent);
 
             }

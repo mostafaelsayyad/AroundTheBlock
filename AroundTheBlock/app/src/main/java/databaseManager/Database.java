@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.Cursor;
 import android.content.Context;
 import android.content.ContentValues;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -20,12 +22,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 public class Database
 {
     public ArrayList listOfPhoneid = new ArrayList();
     public ArrayList listOfCategoryNames = new ArrayList();
+    public ArrayList listOfPlaceNames = new ArrayList();
     public ArrayList listOfPlaceDetails = new ArrayList();
     public ArrayList<ArrayList<String>> placesGivenCategory = new ArrayList();
 
@@ -45,7 +49,8 @@ public class Database
                             .add("phoneid", phoneid)
                             .add("name", name)
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/signup.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/signup.php").post(body).build();
+                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/signup.php").post(body).build();
                     Call call = client.newCall(request);
                     call.enqueue(new Callback() {
 
@@ -99,14 +104,10 @@ public class Database
             public void run() {
                 try {
 
-
-                    ArrayList tempList = new ArrayList();
                     OkHttpClient client = new OkHttpClient();
 
-                            Request request = new Request.Builder()
-                            .url("http://10.0.2.2/AroundTheBlock/selectphoneid.php")
-                                    .build();
-
+                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectphoneid.php").build();
+                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectphoneid.php").build();
                     Response response = client.newCall(request).execute();
 //                        System.out.println("the answer is "+response.body().string());
 
@@ -154,7 +155,8 @@ public class Database
                     RequestBody body = new FormEncodingBuilder()
                             .add("selectedcategory", selectedCategory)
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacesgivencategory.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacesgivencategory.php").post(body).build();
+                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacesgivencategory.php").post(body).build();
 
                     Response response = client.newCall(request).execute();
 
@@ -204,13 +206,10 @@ public class Database
             public void run() {
                 try {
 
-
-                    ArrayList tempList = new ArrayList();
                     OkHttpClient client = new OkHttpClient();
 
-                    Request request = new Request.Builder()
-                            .url("http://10.0.2.2/AroundTheBlock/selectcategorynames.php")
-                            .build();
+                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectcategorynames.php").build();
+                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectcategorynames.php").build();
 
                     Response response = client.newCall(request).execute();
 //                        System.out.println("the answer is "+response.body().string());
@@ -258,7 +257,8 @@ public class Database
                     RequestBody body = new FormEncodingBuilder()
                             .add("selectedPlace", selectedPlace)
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
+                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
 
                     Response response = client.newCall(request).execute();
 
@@ -298,4 +298,62 @@ public class Database
 
         return listOfPlaceDetails;
     }
+
+    public ArrayList SelectAllPlaceNamesForSearchBar()
+    {
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+
+                    OkHttpClient client = new OkHttpClient();
+
+                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacenames.php").build();
+                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacenames.php").build();
+
+                    Response response = client.newCall(request).execute();
+//                        System.out.println("the answer is "+response.body().string());
+
+                    String jsonData = response.body().string();
+                    System.out.println("data hyaa "+jsonData);
+
+                    JSONObject rootObject = new JSONObject(jsonData);
+                    JSONArray array = rootObject.getJSONArray("users");
+
+                    for(int i=0;i<array.length();i++)
+                    {
+                        System.out.println(array.getString(i));
+                        listOfPlaceNames.add(array.getString(i));
+                    }
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+        System.out.println("the listaaaaaaaaaaaa " + listOfPlaceNames);
+
+        return listOfPlaceNames;
+
+    }
+
+    public boolean isOnline(Context context) //not working
+    {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
 }

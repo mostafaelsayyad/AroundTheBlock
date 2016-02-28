@@ -1,5 +1,7 @@
 package com.example.family.aroundtheblock;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        db = new Database();
+
         TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
         String phoneid = tm.getSimSerialNumber();
-
-        db = new Database(); //0 version l2n b3mlaha update mn makan wa7ed gwa el class hnak
 
         ArrayList list = new ArrayList();
         try{
@@ -30,6 +32,27 @@ public class MainActivity extends AppCompatActivity {
         catch(Exception e)
         {
 
+        }
+
+        if(!list.isEmpty())
+        {
+            System.out.println("OK internet");
+
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Sorry can't proceed, No internet connection")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //do things
+                        }
+                    });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            System.out.println("no interneeeeeeeeet");
+
+            return;
         }
 
 
@@ -46,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-
 
         setContentView(R.layout.activity_main);
     }
