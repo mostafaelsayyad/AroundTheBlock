@@ -49,8 +49,8 @@ public class Database
                             .add("phoneid", phoneid)
                             .add("name", name)
                             .build();
-                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/signup.php").post(body).build();
-                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/signup.php").post(body).build();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/signup.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/signup.php").post(body).build();
                     Call call = client.newCall(request);
                     call.enqueue(new Callback() {
 
@@ -106,8 +106,8 @@ public class Database
 
                     OkHttpClient client = new OkHttpClient();
 
-                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectphoneid.php").build();
-                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectphoneid.php").build();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectphoneid.php").build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectphoneid.php").build();
                     Response response = client.newCall(request).execute();
 //                        System.out.println("the answer is "+response.body().string());
 
@@ -155,8 +155,8 @@ public class Database
                     RequestBody body = new FormEncodingBuilder()
                             .add("selectedcategory", selectedCategory)
                             .build();
-                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacesgivencategory.php").post(body).build();
-                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacesgivencategory.php").post(body).build();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacesgivencategory.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacesgivencategory.php").post(body).build();
 
                     Response response = client.newCall(request).execute();
 
@@ -208,8 +208,8 @@ public class Database
 
                     OkHttpClient client = new OkHttpClient();
 
-                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectcategorynames.php").build();
-                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectcategorynames.php").build();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectcategorynames.php").build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectcategorynames.php").build();
 
                     Response response = client.newCall(request).execute();
 //                        System.out.println("the answer is "+response.body().string());
@@ -257,8 +257,8 @@ public class Database
                     RequestBody body = new FormEncodingBuilder()
                             .add("selectedPlace", selectedPlace)
                             .build();
-                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
-                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
 
                     Response response = client.newCall(request).execute();
 
@@ -307,9 +307,9 @@ public class Database
                 try {
 
                     OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacenames.php").build();
 
-                    //Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacenames.php").build();
-                    Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacenames.php").build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacenames.php").build();
 
                     Response response = client.newCall(request).execute();
 //                        System.out.println("the answer is "+response.body().string());
@@ -354,6 +354,63 @@ public class Database
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public Boolean addRating(final String phoneid, final String placeid, final String rating)
+    {
+        System.out.println("phone id is "+phoneid);
+        System.out.println("phone id is "+placeid);
+        System.out.println("phone id is "+rating);
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            .add("phoneid", phoneid)
+                            .add("placeid", placeid)
+                            .add("rating", rating)
+                            .build();
+                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/rating.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/rating.php").post(body).build();
+                    Call call = client.newCall(request);
+                    call.enqueue(new Callback() {
+
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            System.out.println("Registration Error" + e.getMessage());
+                        }
+
+                        @Override
+                        public void onResponse(Response response) throws IOException {
+                            try {
+                                String resp = response.body().string();
+                                System.out.println(resp);
+
+                            } catch (IOException e) {
+                                // Log.e(TAG_REGISTER, "Exception caught: ", e);
+                                System.out.println("Exception caught" + e.getMessage());
+                            }
+                        }
+                    });
+
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+        return true;
     }
 
 }
