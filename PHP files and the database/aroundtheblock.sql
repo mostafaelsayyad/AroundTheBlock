@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2016 at 12:14 PM
+-- Generation Time: Mar 03, 2016 at 03:54 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -19,6 +19,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `aroundtheblock`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE IF NOT EXISTS `comments` (
+  `commentid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` varchar(255) NOT NULL,
+  `placeid` int(255) NOT NULL,
+  `comment` longtext NOT NULL,
+  `commentupvotecount` int(255) NOT NULL,
+  `commentdate` date NOT NULL,
+  PRIMARY KEY (`commentid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `commentsupvotes`
+--
+
+CREATE TABLE IF NOT EXISTS `commentsupvotes` (
+  `commentupvoteid` int(11) NOT NULL AUTO_INCREMENT,
+  `commentid` int(11) NOT NULL,
+  `userid` varchar(255) NOT NULL,
+  PRIMARY KEY (`commentupvoteid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -117,6 +146,18 @@ INSERT INTO `places` (`placeid`, `name`, `address`, `phonenumber`, `latitude`, `
 (70, 'la maison de mireille t.', '7 ahmed heshmat st.', '27351925, 27359698, 01224003830', '30.0633', '31.2219', 'home decor', '4', '3.5', '', ''),
 (71, 'mondial', '2 ahmed heshmat st.', '27383453, 27361180', '30.0631', '31.2218', 'pharmacy', 'standard', 'standard', '', ''),
 (72, 'abou simble', '2 ahmed heshmat st.', '1119561834', '30.0631', '31.2218', 'mini market', '2', 'standard', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ratings`
+--
+
+CREATE TABLE IF NOT EXISTS `ratings` (
+  `userid` varchar(255) NOT NULL,
+  `placeid` int(11) NOT NULL,
+  `rating` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
