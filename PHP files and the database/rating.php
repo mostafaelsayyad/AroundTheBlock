@@ -1,5 +1,5 @@
 <?php
-$con=mysqli_connect("mysql3.000webhost.com","a2744916_around","tfmg5502","a2744916_around");
+$con=mysqli_connect("localhost","root","","AroundTheBlock");
 
 if (mysqli_connect_errno($con))
 {
