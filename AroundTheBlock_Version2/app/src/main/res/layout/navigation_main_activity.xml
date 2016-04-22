@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:id="@+id/drawer_layout"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_content">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="142dp"
+            android:height="40dp"
+            android:width="250dp"
+            style="@style/Base.Widget.AppCompat.SearchView.ActionBar" />
+
+        <SearchView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchView"
+            android:layout_alignTop="@+id/editText"
+            android:layout_toEndOf="@+id/editText"
+            android:baselineAligned="true" />
+
+
+    </RelativeLayout>
+    
+    <ListView
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:id="@+id/lv_sliding_menu"
+        android:background="#ffffff"
+        android:choiceMode="singleChoice"
+        android:layout_gravity="start"></ListView>
+
+</android.support.v4.widget.DrawerLayout>
