@@ -3,9 +3,7 @@ package com.example.hagarhossam.aroundtheblock_version2.UserProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -131,7 +129,7 @@ public class UserProfile extends ActionBarActivity {
 
         BigList = db.selectSavedPlaces(email);
         if(BigList.size()>=1){
-            Intent myPlaces = new Intent(this, SavePlace.class);
+            Intent myPlaces = new Intent(this, SavedPlace.class);
             startActivity(myPlaces);
         }
 

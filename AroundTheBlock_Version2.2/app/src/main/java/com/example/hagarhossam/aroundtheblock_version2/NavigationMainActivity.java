@@ -16,12 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.example.hagarhossam.aroundtheblock_version2.DatabaseManager.Database;
 import com.example.hagarhossam.aroundtheblock_version2.PlaceProfile.PlaceDetails;
+import com.example.hagarhossam.aroundtheblock_version2.Search.SearchedPlaces;
 import com.example.hagarhossam.aroundtheblock_version2.UserProfile.SignUp;
 import com.example.hagarhossam.aroundtheblock_version2.UserProfile.Sign_in;
 import com.example.hagarhossam.aroundtheblock_version2.UserProfile.UserProfile;
@@ -30,10 +32,6 @@ import com.example.hagarhossam.aroundtheblock_version2.fragment.Fragment1;
 import com.example.hagarhossam.aroundtheblock_version2.fragment.Fragment2;
 import com.example.hagarhossam.aroundtheblock_version2.fragment.Fragment3;
 import com.example.hagarhossam.aroundtheblock_version2.model.categorySlideMenu;
-//import com.liferay.mobile.screens.context.LiferayScreensContext;
-//import com.liferay.mobile.screens.context.SessionContext;
-//import com.liferay.mobile.screens.context.storage.CredentialsStoreBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +48,10 @@ public class NavigationMainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     ListView nonpersonalizedListView;
     private Database db;
+    private AutoCompleteTextView autoComp;
+    private ArrayList PlacesName;
+    EditText _searchText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,24 +60,7 @@ public class NavigationMainActivity extends ActionBarActivity {
 
 
 
-////////////////// Show "WELCOME USERNAME"  /////////////////////////
-//        TextView textView = (TextView) findViewById(R.id.txt_email);
-//        textView.setVisibility(View.GONE);
-
-//        Intent intent = getIntent();
-//        String username = intent.getStringExtra(SignIn.USER_NAME);
-//        TextView textView = (TextView) findViewById(R.id.txt_email);
-//        if(username.length()>0){
-//            textView.setVisibility(View.VISIBLE);
-//            textView.setText(username);
-//            textView.showContextMenu();
-//        }
-//        else {
-//            textView.setVisibility(View.GONE);
-//
-//        }
-
-
+        PlacesName = new ArrayList();
         listViewSliding = (ListView)findViewById(R.id.lv_sliding_menu);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mainContent = (RelativeLayout)findViewById(R.id.main_content);
@@ -85,7 +70,7 @@ public class NavigationMainActivity extends ActionBarActivity {
         listSliding.add(new categorySlideMenu(R.drawable.pet,"Pet"));
         adapter = new SlidingMenuAdapter(this,listSliding);
         listViewSliding.setAdapter(adapter);
-
+        _searchText = (EditText)findViewById(R.id.searchText);
 
 
 
@@ -215,6 +200,8 @@ public class NavigationMainActivity extends ActionBarActivity {
         };
 
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+
     }
 
     @Override
@@ -223,6 +210,21 @@ public class NavigationMainActivity extends ActionBarActivity {
         inflater.inflate(R.menu.navigation_main_menu, menu);
 
         return true;
+    }
+
+    public void searchButtonClicked(View view ){
+
+        String searchText=_searchText.getText().toString();
+
+        if(searchText.length()>=1){
+            Intent searchIntent = new Intent(this, SearchedPlaces.class);
+            searchIntent.putExtra("searchText", searchText);
+            startActivity(searchIntent);
+        }
+        else{
+            Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     @Override
@@ -281,11 +283,10 @@ public class NavigationMainActivity extends ActionBarActivity {
         Toast.makeText(this, "Entered options Selected", Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
 
-    }
 
-    public void searchButtonClicked(View view ){
 
     }
+
 
     @Override
     public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {

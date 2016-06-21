@@ -36,8 +36,9 @@
         <activity android:name=".PlaceProfile.PlaceDetails" />
         <activity android:name=".UserProfile.UserProfile" />
         <activity android:name=".UserProfile.Sign_in" />
-        <activity android:name=".UserProfile.SavePlace" />
-        <activity android:name=".UserProfile.EditProfile"></activity>
+        <activity android:name=".UserProfile.SavedPlace" />
+        <activity android:name=".UserProfile.EditProfile" />
+        <activity android:name=".Search.SearchedPlaces"></activity>
     </application>
 
 </manifest>

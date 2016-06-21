@@ -31,6 +31,8 @@ public class Database {
     Boolean edit;
 
     String user_name;
+
+    public ArrayList<ArrayList<String>> searchList;
     //review
     public ArrayList<ArrayList<String>> reviewsList;
     public ArrayList<ArrayList<String>> usersList;
@@ -51,10 +53,11 @@ public class Database {
 
         resp = "";
         user_name ="";
+
+        searchList = new ArrayList();
         //review
         reviewsList = new ArrayList();// ArrayList for Review feature
         usersList = new ArrayList();
-        edit = false;
         //
 
         //non personalized recommender
@@ -82,7 +85,7 @@ public class Database {
                             .add("password", password)
                             .add("name", name)
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/sign_up1.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/sign_up1.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/signup.php").post(body).build();
                     Call call = client.newCall(request);
                     call.enqueue(new Callback() {
@@ -96,6 +99,7 @@ public class Database {
                         public void onResponse(Response response) throws IOException {
                             try {
                                 String resp = response.body().string();
+                                edit =true;
                                 System.out.println(resp);
 
                             } catch (Exception e) {
@@ -113,6 +117,12 @@ public class Database {
             }
         });
 
+        try {
+            thread.start();
+            thread.join();
+        } catch (Exception e) {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
 
         return resp;
     }
@@ -132,7 +142,7 @@ public class Database {
                             .build();
 
                     //192.168.1.5
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/sign_in-Copy.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/sign_in-Copy.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
 
                     Response response = client.newCall(request).execute();
@@ -269,7 +279,7 @@ public class Database {
                             .add("name", name)
                             .add("password", password)
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/updateProfile.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/updateProfile.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/signup.php").post(body).build();
                     Call call = client.newCall(request);
                     call.enqueue(new Callback() {
@@ -331,7 +341,7 @@ public class Database {
                             .add("review", review)
                             .add("date", date)
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/review.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/review.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/signup.php").post(body).build();
                     Call call = client.newCall(request);
                     call.enqueue(new Callback() {
@@ -375,7 +385,7 @@ public class Database {
     }
 
 
-    public ArrayList<ArrayList<String>> selectReviews(final String userId, final String placeId)
+    public ArrayList<ArrayList<String>> selectReviews( final String placeID)
     {
         Thread thread = new Thread(new Runnable(){
             @Override
@@ -383,12 +393,12 @@ public class Database {
                 try {
                     OkHttpClient client = new OkHttpClient();
                     RequestBody body = new FormEncodingBuilder()
-                            .add("userId", userId) // benefit #2, eni bab3t el userid, 3shan arg3o fil returnarray mn el php lel java, 3shan yb2a array wa7ed w 5las
-                            .add("placeId", placeId)
+                    // benefit #2, eni bab3t el userid, 3shan arg3o fil returnarray mn el php lel java, 3shan yb2a array wa7ed w 5las
+                            .add("placeID", placeID)
                             .build();
 
                             //192.168.1.5
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectreviews.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/selectreviews.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
 
                     Response response = client.newCall(request).execute();
@@ -432,7 +442,7 @@ public class Database {
         return reviewsList;
     }
 
-////////////////////////////////////////////////////////// Saved places /////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////// Saved places /////////////////////////////////////////////////////////////////\
 
     public ArrayList<ArrayList<String>> selectSavedPlaces(final String email)
     {
@@ -446,7 +456,7 @@ public class Database {
                             .build();
 
                     //192.168.1.5
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplaces.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/selectSavedPlaces.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
 
                     Response response = client.newCall(request).execute();
@@ -489,6 +499,63 @@ public class Database {
 
         return reviewsList;
     }
+
+    ////////////////////////////////////////////////////////// Searched places /////////////////////////////////////////////////////////////////
+    public  ArrayList<ArrayList<String>> selectPlacesNameInSearchBar(final String searchText)
+    {
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            .add("searchText", searchText) // benefit #2, eni bab3t el userid, 3shan arg3o fil returnarray mn el php lel java, 3shan yb2a array wa7ed w 5las
+                            .build();
+
+                    //192.168.1.5
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/selectPlacesInSearchBar.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
+
+                    Response response = client.newCall(request).execute();
+
+                    String jsonData = response.body().string();
+                    System.out.println("data hyaa fil places  "+jsonData);
+
+                    JSONObject rootObject = new JSONObject(jsonData);
+                    JSONArray array = rootObject.getJSONArray("places");
+
+                    for(int i=0;i<array.length();i++)
+                    {
+                        JSONArray array2 = array.getJSONArray(i);
+                        ArrayList<String> tempList = new ArrayList<>();
+                        for(int j=0;j<array2.length();j++)
+                        {
+                            //System.out.println("PLACES AAAARE "+array2.getString(j)+ " \n ");
+                            tempList.add(array2.getString(j));
+                            //String name = array2.getString(0);
+                        }
+                        searchList.add(tempList);
+                    }
+
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+        return searchList;
+    }
     ///////////////////////////////////////  non personalized recommender /////////////////////////////////////////////////
 
     public ArrayList RecommenderSelectScore()
@@ -503,7 +570,7 @@ public class Database {
                     RequestBody body = new FormEncodingBuilder()
                             .add("placeId", "")
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/recommenderselectscore.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/recommenderselectscore.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
 
                     Response response = client.newCall(request).execute();
@@ -642,7 +709,7 @@ public class Database {
                             .add("score", String.valueOf(score))
                             .build();
 
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/insertscorerecommender.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/insertscorerecommender.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/signup.php").post(body).build();
                     Call call = client.newCall(request);
                     call.enqueue(new Callback() {
@@ -695,7 +762,7 @@ public class Database {
                     RequestBody body = new FormEncodingBuilder()
                             .add("placeId", "")
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/deletedatainsidenonpersonalized.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/deletedatainsidenonpersonalized.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/signup.php").post(body).build();
                     Call call = client.newCall(request);
                     call.enqueue(new Callback() {
@@ -750,7 +817,7 @@ public class Database {
                     RequestBody body = new FormEncodingBuilder()
                             .add("x", "")
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectTop3NonPersonalized.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/selectTop3NonPersonalized.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
 
                     Response response = client.newCall(request).execute();
@@ -807,7 +874,7 @@ public class Database {
                     RequestBody body = new FormEncodingBuilder()
                             .add("selectedPlace", selectedPlace)
                             .build();
-                    Request request = new Request.Builder().url("http://10.0.2.2/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
                     //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
 
                     Response response = client.newCall(request).execute();

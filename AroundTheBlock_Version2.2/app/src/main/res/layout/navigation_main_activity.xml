@@ -15,23 +15,14 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
+            android:id="@+id/searchText"
             android:height="40dp"
             android:width="250dp"
             style="@style/Base.Widget.AppCompat.SearchView.ActionBar"
             android:theme="@style/Theme.App.Base"
-            android:layout_marginBottom="60dp"
-            android:layout_alignBottom="@+id/textView"
+            android:layout_marginTop="71dp"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
-
-        <SearchView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchView"
-            android:layout_alignTop="@+id/editText"
-            android:layout_toEndOf="@+id/editText"
-            android:baselineAligned="true"
-            android:onClick="searchButtonClicked" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,6 +40,20 @@
             android:textAlignment="center"
 
             android:layout_below="@+id/textView" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="90dp"
+            android:layout_height="40dp"
+            android:text="Search"
+            android:id="@+id/button4"
+            android:onClick="searchButtonClicked"
+            android:textAllCaps="false"
+            android:background="@drawable/oval_button"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/searchText"
+            android:layout_centerHorizontal="true"
+            android:textSize="15dp" />
 
         <!--<TextView-->
             <!--android:layout_width="wrap_content"-->

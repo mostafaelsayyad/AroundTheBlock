@@ -48,14 +48,9 @@ public class EditProfile extends AppCompatActivity {
 
         System.out.println("THE RESPONSE1111"+response);
 
-        if(response == true){
 
-            Toast.makeText(this, "Updated Successfully", Toast.LENGTH_LONG).show();
-        }
+        Toast.makeText(this, "Updated Successfully", Toast.LENGTH_LONG).show();
 
-        else{
-            Toast.makeText(this, "Updated failed", Toast.LENGTH_LONG).show();
-        }
 
 
     }

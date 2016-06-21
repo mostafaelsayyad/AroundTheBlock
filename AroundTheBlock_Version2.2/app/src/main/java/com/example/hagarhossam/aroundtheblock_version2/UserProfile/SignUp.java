@@ -48,13 +48,14 @@ public class SignUp extends AppCompatActivity {
             db = new Database();
             String resp = db.SignUp(email, passwrod, name);
             System.out.println("el responsse hya "+resp);
-            //
+
             if (resp.contains("Duplicate entry")){
                 Toast.makeText(SignUp.this, "Sign up failed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this,SignUp.class);
                 startActivity(intent);
 
             }
+
             else {
                 Intent intent = new Intent(this,NavigationMainActivity.class);
                 startActivity(intent);
