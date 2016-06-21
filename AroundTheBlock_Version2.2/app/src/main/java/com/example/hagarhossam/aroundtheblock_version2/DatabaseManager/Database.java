@@ -31,6 +31,7 @@ public class Database {
     Boolean edit;
 
     String user_name;
+    ArrayList<String> navigateList = new ArrayList<>();
 
     public ArrayList<ArrayList<String>> searchList;
     //review
@@ -918,5 +919,57 @@ public class Database {
 
 ////////////////////////////////////////////////////////// End of non personalized recommender /////////////////////////////////////////////////////////////////
 
+
+////////////////////////////////////////////////////////// Navigation /////////////////////////////////////////////////////////////////
+    public ArrayList<String> Navigation(final String placeId)
+    {
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            .add("PlaceId", placeId)
+                            .build();
+                    Request request = new Request.Builder().url("http://192.168.1.9/AroundTheBlock/navigate.php").post(body).build();
+
+                    Response response = client.newCall(request).execute();
+
+                    String jsonData = response.body().string();
+                    System.out.println("data hyaa fil places  "+jsonData);
+
+                    JSONObject rootObject = new JSONObject(jsonData);
+                    JSONArray array = rootObject.getJSONArray("navigation");
+
+                    for(int i=0;i<array.length();i++)
+                    {
+                        JSONArray array2 = array.getJSONArray(i);
+                        for(int j=0;j<array2.length();j++)
+                        {
+                            System.out.println("PLACES DETAILS ARE " + array2.getString(j) + " \n ");
+                            navigateList.add(array2.getString(j));
+                        }
+                    }
+
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+        System.out.println(navigateList);
+        return navigateList;
+    }
 }
 

@@ -27,7 +27,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Welcome"
         android:id="@+id/textView"
-        android:textSize="25dp"
+        android:textSize="18dp"
         android:textColor="#410101"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />

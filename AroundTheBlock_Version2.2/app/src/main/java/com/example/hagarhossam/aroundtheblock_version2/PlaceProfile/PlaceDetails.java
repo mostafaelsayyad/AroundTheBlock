@@ -30,6 +30,7 @@ public class PlaceDetails extends AppCompatActivity {
     EditText mEdit;
     TextView placeName;
     TextView placeAddress;
+    ArrayList placeDetails = new ArrayList();
 
 
 
@@ -40,7 +41,6 @@ public class PlaceDetails extends AppCompatActivity {
 
         //get The arraylist from Searched places that have the details of the place
         Intent intent = getIntent();
-        ArrayList placeDetails = new ArrayList();
         placeDetails = intent.getStringArrayListExtra("placeDetails");
         placeName = (TextView)findViewById(R.id.place_name);
         placeAddress = (TextView)findViewById(R.id.place_address);
@@ -96,5 +96,12 @@ public class PlaceDetails extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(PlaceDetails.this, NavigationMainActivity.class);//mfrood mn place profile l place profile w 5alas kda 5eles el recommendation
         startActivity(intent);
+    }
+
+    public void onMapsButton(View view){
+
+        Intent navigation = new Intent(this, MapsActivity.class);
+        navigation.putStringArrayListExtra("placeDetails", placeDetails);
+        startActivity(navigation);
     }
 }
