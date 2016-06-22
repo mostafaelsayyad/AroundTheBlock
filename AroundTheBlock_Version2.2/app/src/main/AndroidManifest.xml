@@ -60,7 +60,9 @@
 
         <activity
             android:name=".PlaceProfile.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".Search.CategorySearch" />
+        <activity android:name=".PlaceProfile.ReportPlaceError"></activity>
     </application>
 
 </manifest>

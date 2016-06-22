@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.hagarhossam.aroundtheblock_version2.DatabaseManager.Database;
 import com.example.hagarhossam.aroundtheblock_version2.NavigationMainActivity;
+import com.example.hagarhossam.aroundtheblock_version2.PlaceProfile.PlaceDetails;
 import com.example.hagarhossam.aroundtheblock_version2.R;
 
 import java.util.ArrayList;
@@ -70,8 +71,17 @@ public class UserProfile extends ActionBarActivity {
 
     }
 
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     public void onEditProfileButtonClick(View view){
         Intent editProfile = new Intent(this, EditProfile.class);
         startActivity(editProfile);
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    public void onBackPressed() {
+        Intent intent = new Intent(UserProfile.this, NavigationMainActivity.class);//mfrood mn place profile l place profile w 5alas kda 5eles el recommendation
+        startActivity(intent);
     }
 }

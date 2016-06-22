@@ -17,7 +17,8 @@
         android:weightSum="3"
         android:id="@+id/linearLayout2"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:gravity="fill">
 
         <ImageView
             android:layout_width="161dp"
@@ -43,54 +44,91 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Get Directions"
-            android:id="@+id/button5"
-            android:layout_marginTop="80dp"
-            android:textColor="#ffffff"
-            android:textAllCaps="false"
-            android:layout_gravity="center_horizontal"
-            android:background="#50b1ba"
-            android:drawableTop="@drawable/location"
-            android:onClick="onMapsButton" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:inputType="textMultiLine"
-            android:lines="2"
-            android:gravity="top|left"
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Get Directions"
+                android:id="@+id/button5"
+                android:layout_marginTop="70dp"
+                android:textColor="#ffffff"
+                android:textAllCaps="false"
+                android:background="#50b1ba"
+                android:drawableTop="@drawable/location"
+                android:onClick="onMapsButton"
+                android:layout_marginLeft="0dp" />
 
-            android:layout_height="40dp"
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Save Place"
+                android:textColor="#ffffff"
+                android:textAllCaps="false"
+                android:background="#50b1ba"
+                android:drawableTop="@drawable/star"
+                android:id="@+id/save_place"
+                android:layout_marginTop="70dp"
+                android:onClick="onSavePlaceButton"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="15dp" />
+
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Report Place Error"
+                android:textColor="#ffffff"
+                android:textAllCaps="false"
+                android:background="#50b1ba"
+                android:id="@+id/button6"
+                android:layout_marginTop="50dp"
+                android:onClick="onReportErrorButton"
+                android:layout_marginLeft="0dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:scrollbars="vertical"
-            android:hint="write your review"
-            android:id="@+id/reviewIDText"
-            android:layout_marginTop="30dp"
-            android:textSize="15dp" />
+            android:layout_height="wrap_content">
 
-        <Button
-            android:layout_width="70dp"
-            android:layout_height="30dp"
-            android:text="Submit"
+            <EditText
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:gravity="top|left"
 
-            android:id="@+id/button"
+                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:scrollbars="vertical"
+                android:hint="write your review"
+                android:id="@+id/reviewIDText"
+                android:layout_marginTop="30dp"
+                android:textSize="15dp" />
 
-            android:onClick="SubmitButtonClicked"
-            android:layout_gravity="right"
-            android:layout_alignParentTop="true"
-            android:layout_alignEnd="@+id/linearLayout2"
-            android:background="@drawable/oval_button"
-            android:textColor="#ffffff"
-            android:textSize="10dp"
-            android:textStyle="normal"
-            android:textAllCaps="false" />
+            <Button
+                android:layout_width="70dp"
+                android:layout_height="35dp"
+                android:text="Submit"
+                android:id="@+id/button"
+                android:onClick="SubmitButtonClicked"
+                android:layout_gravity="right"
+                android:layout_alignParentTop="true"
+                android:layout_alignEnd="@+id/linearLayout2"
+                android:background="@drawable/oval_button"
+                android:textColor="#ffffff"
+                android:textSize="12dp"
+                android:textStyle="normal"
+                android:textAllCaps="false" />
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:id="@+id/listView" />
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:id="@+id/listView" />
+        </LinearLayout>
 
 
     </LinearLayout>

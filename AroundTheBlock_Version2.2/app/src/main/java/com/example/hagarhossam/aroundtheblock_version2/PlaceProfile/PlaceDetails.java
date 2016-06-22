@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -31,6 +32,11 @@ public class PlaceDetails extends AppCompatActivity {
     TextView placeName;
     TextView placeAddress;
     ArrayList placeDetails = new ArrayList();
+    Button buttonSubmit;
+    Button savePlace;
+    String result; // Save place
+
+
 
 
 
@@ -42,12 +48,17 @@ public class PlaceDetails extends AppCompatActivity {
         //get The arraylist from Searched places that have the details of the place
         Intent intent = getIntent();
         placeDetails = intent.getStringArrayListExtra("placeDetails");
+
         placeName = (TextView)findViewById(R.id.place_name);
         placeAddress = (TextView)findViewById(R.id.place_address);
         placeName.setText( placeDetails.get(1).toString() );
         placeAddress.setText( placeDetails.get(2).toString() );
         placeId = placeDetails.get(0).toString();
         System.out.println("PLACE ID"+placeId);
+        mEdit   = (EditText)findViewById(R.id.reviewIDText);
+        buttonSubmit = (Button) findViewById(R.id.button);
+        savePlace = (Button) findViewById(R.id.save_place);
+
 
 
 
@@ -60,10 +71,7 @@ public class PlaceDetails extends AppCompatActivity {
        // placeId = "2";
 
         db = new Database();
-
-
         ArrayList<ArrayList<String>> BigList = new ArrayList<>();
-
         BigList = db.selectReviews( placeId);
         System.out.println("Big list is "+BigList);
 
@@ -71,6 +79,17 @@ public class PlaceDetails extends AppCompatActivity {
 
         ListView buckysListView = (ListView) findViewById(R.id.listView);
         buckysListView.setAdapter(buckysAdaptor);
+
+        if (email == "") {
+
+            mEdit.setEnabled(false);
+            mEdit.setFocusable(false);
+            mEdit.setHint("Sign in or Sign up to write your Review");
+            buttonSubmit.setVisibility(View.INVISIBLE);
+            savePlace.setVisibility(View.INVISIBLE);
+        }
+
+
     }
 
     public void SubmitButtonClicked(View view)
@@ -81,12 +100,12 @@ public class PlaceDetails extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String formattedDate = df.format(c.getTime());
 
-        mEdit   = (EditText)findViewById(R.id.reviewIDText);
         String review = mEdit.getText().toString();
-
 
         db.insertReview(email, placeId, review, formattedDate);
 
+        finish();
+        startActivity(getIntent());
 
         Toast.makeText(PlaceDetails.this, "Review has been submitted",
                 Toast.LENGTH_SHORT).show();
@@ -104,4 +123,19 @@ public class PlaceDetails extends AppCompatActivity {
         navigation.putStringArrayListExtra("placeDetails", placeDetails);
         startActivity(navigation);
     }
+
+    public void onReportErrorButton(View view){
+
+        Intent Error = new Intent(this, ReportPlaceError.class);
+        Error.putExtra("PlaceID", placeId);
+        startActivity(Error);
+    }
+
+    public void onSavePlaceButton(View view){
+
+        result = db.savePlace(email,placeId);
+        Toast.makeText(getBaseContext(), "Place saved", Toast.LENGTH_LONG).show();
+
+    }
+
 }

@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.example.hagarhossam.aroundtheblock_version2.DatabaseManager.Database;
 import com.example.hagarhossam.aroundtheblock_version2.PlaceProfile.PlaceDetails;
+import com.example.hagarhossam.aroundtheblock_version2.Search.CategorySearch;
 import com.example.hagarhossam.aroundtheblock_version2.Search.SearchedPlaces;
 import com.example.hagarhossam.aroundtheblock_version2.UserProfile.SignUp;
 import com.example.hagarhossam.aroundtheblock_version2.UserProfile.Sign_in;
@@ -51,6 +52,7 @@ public class NavigationMainActivity extends ActionBarActivity {
     private AutoCompleteTextView autoComp;
     private ArrayList PlacesName;
     EditText _searchText;
+    String categoryName; // Category Search
 
 
     @Override
@@ -65,9 +67,11 @@ public class NavigationMainActivity extends ActionBarActivity {
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mainContent = (RelativeLayout)findViewById(R.id.main_content);
         listSliding = new ArrayList<>();
-        listSliding.add(new categorySlideMenu(R.drawable.food, "Food"));
-        listSliding.add(new categorySlideMenu(R.drawable.clothes,"Clothes"));
-        listSliding.add(new categorySlideMenu(R.drawable.pet,"Pet"));
+        listSliding.add(new categorySlideMenu( "Food"));
+        listSliding.add(new categorySlideMenu("Clothes"));
+        listSliding.add(new categorySlideMenu("Pet Shop"));
+        listSliding.add(new categorySlideMenu("Bank"));
+        listSliding.add(new categorySlideMenu("Pet"));
         adapter = new SlidingMenuAdapter(this,listSliding);
         listViewSliding.setAdapter(adapter);
         _searchText = (EditText)findViewById(R.id.searchText);
@@ -169,10 +173,16 @@ public class NavigationMainActivity extends ActionBarActivity {
 
 
                 //set title
-                setTitle(listSliding.get(position).getTitle());
+                //setTitle(listSliding.get(position).getTitle());
 
                 //Item selected
                 listViewSliding.setItemChecked(position, true);
+                categoryName = listSliding.get(position).getTitle();
+                System.out.println("CATEGORY NAMEE"+categoryName);
+                Intent intent = new Intent(NavigationMainActivity.this, CategorySearch.class);
+                intent.putExtra("categoryName",categoryName);
+                startActivity(intent);
+
 
                 //Close menu
                 drawerLayout.closeDrawer(listViewSliding);

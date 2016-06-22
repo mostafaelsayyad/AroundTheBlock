@@ -47,10 +47,10 @@ public class SlidingMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v= View.inflate(context, R.layout.category_sliding_menu, null);
-        ImageView img = (ImageView)v.findViewById(R.id.category_image);
+        //ImageView img = (ImageView)v.findViewById(R.id.category_image);
         TextView tv = (TextView)v.findViewById(R.id.category_title);
         categorySlideMenu category = firstCategory.get(position);
-        img.setImageResource(category.getImageId());
+        //img.setImageResource(category.getImageId());
         tv.setText(category.getTitle());
         return v;
     }
