@@ -71,7 +71,26 @@ public class NavigationMainActivity extends ActionBarActivity {
         listSliding.add(new categorySlideMenu("Clothes"));
         listSliding.add(new categorySlideMenu("Pet Shop"));
         listSliding.add(new categorySlideMenu("Bank"));
-        listSliding.add(new categorySlideMenu("Pet"));
+        listSliding.add(new categorySlideMenu("Mall"));
+        listSliding.add(new categorySlideMenu("Garage"));
+        listSliding.add(new categorySlideMenu("Home Accessories"));
+        listSliding.add(new categorySlideMenu("Toys Shop"));
+        listSliding.add(new categorySlideMenu("Jewellery"));
+        listSliding.add(new categorySlideMenu("Art Gallery"));
+        listSliding.add(new categorySlideMenu("Beauty Center"));
+        listSliding.add(new categorySlideMenu("Gym"));
+        listSliding.add(new categorySlideMenu("Pharmacy"));
+        listSliding.add(new categorySlideMenu("Knitting Kits and Accessories"));
+        listSliding.add(new categorySlideMenu("Air Conditioning Shop"));
+        listSliding.add(new categorySlideMenu("Market"));
+        listSliding.add(new categorySlideMenu("Home Furniture"));
+        listSliding.add(new categorySlideMenu("Mosque"));
+        listSliding.add(new categorySlideMenu("Maintenance"));
+        listSliding.add(new categorySlideMenu("Travel agency"));
+        listSliding.add(new categorySlideMenu("Dry Clean"));
+        listSliding.add(new categorySlideMenu("Health Laboratory Check-up "));
+
+
         adapter = new SlidingMenuAdapter(this,listSliding);
         listViewSliding.setAdapter(adapter);
         _searchText = (EditText)findViewById(R.id.searchText);

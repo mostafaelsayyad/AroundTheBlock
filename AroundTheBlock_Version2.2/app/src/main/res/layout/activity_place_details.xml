@@ -26,6 +26,8 @@
             android:id="@+id/imageView2"
             android:layout_gravity="center_horizontal" />
 
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,10 +46,19 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/phoneNumber"
+            android:layout_gravity="center_horizontal" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="83dp"
+            android:layout_marginTop="20dp">
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -55,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="Get Directions"
                 android:id="@+id/button5"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="30dp"
                 android:textColor="#ffffff"
                 android:textAllCaps="false"
                 android:background="#50b1ba"
@@ -72,7 +83,7 @@
                 android:background="#50b1ba"
                 android:drawableTop="@drawable/star"
                 android:id="@+id/save_place"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="30dp"
                 android:onClick="onSavePlaceButton"
                 android:layout_marginLeft="18dp"
                 android:layout_marginRight="15dp" />
@@ -86,7 +97,7 @@
                 android:textAllCaps="false"
                 android:background="#50b1ba"
                 android:id="@+id/button6"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="10dp"
                 android:onClick="onReportErrorButton"
                 android:layout_marginLeft="0dp" />
         </LinearLayout>

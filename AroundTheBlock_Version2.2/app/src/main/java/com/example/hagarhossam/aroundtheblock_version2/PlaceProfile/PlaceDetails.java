@@ -3,11 +3,15 @@ package com.example.hagarhossam.aroundtheblock_version2.PlaceProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -19,7 +23,11 @@ import com.example.hagarhossam.aroundtheblock_version2.ListView.Helper;
 import com.example.hagarhossam.aroundtheblock_version2.NavigationMainActivity;
 import com.example.hagarhossam.aroundtheblock_version2.R;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,6 +42,8 @@ public class PlaceDetails extends AppCompatActivity {
     RatingBar rating_b; // Rating
     TextView placeName;
     TextView placeAddress;
+    TextView placeNumber;
+    ImageView placeImage;
     ArrayList placeDetails = new ArrayList();
     Button buttonSubmit;
     Button savePlace;
@@ -55,28 +65,44 @@ public class PlaceDetails extends AppCompatActivity {
         Intent intent = getIntent();
         placeDetails = intent.getStringArrayListExtra("placeDetails");
 
-        rating_b = (RatingBar) findViewById(R.id.ratingBar);
-
-        placeName = (TextView)findViewById(R.id.place_name);
-        placeAddress = (TextView)findViewById(R.id.place_address);
-        placeName.setText( placeDetails.get(1).toString() );
-        placeAddress.setText( placeDetails.get(2).toString() );
-        placeId = placeDetails.get(0).toString();
-        System.out.println("PLACE ID"+placeId);
-        mEdit   = (EditText)findViewById(R.id.reviewIDText);
-        buttonSubmit = (Button) findViewById(R.id.button);
-        savePlace = (Button) findViewById(R.id.save_place);
-
-
-
 
         // get user ID from shared preference
         SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         email = sharedPreferences.getString("email", "");
         System.out.println("THE EMAIL"+email);
 
-        //userId = "mostafa.elsayad@hotmail.com";
-       // placeId = "2";
+
+        rating_b = (RatingBar) findViewById(R.id.ratingBar);
+        placeName = (TextView)findViewById(R.id.place_name);
+        placeAddress = (TextView)findViewById(R.id.place_address);
+        placeNumber = (TextView)findViewById(R.id.phoneNumber);
+        placeImage = (ImageView)findViewById(R.id.imageView2);
+        mEdit   = (EditText)findViewById(R.id.reviewIDText);
+        buttonSubmit = (Button) findViewById(R.id.button);
+        savePlace = (Button) findViewById(R.id.save_place);
+
+
+        placeName.setText( placeDetails.get(1).toString() );
+        placeAddress.setText( placeDetails.get(2).toString() );
+        placeId = placeDetails.get(0).toString();
+
+ //////////////////////// set mobile number ///////////////////////////////////////
+        if (!placeDetails.get(3).toString().contains("null")) {
+            placeNumber.setText("Mobile number: "+placeDetails.get(3).toString());
+        }
+
+        else {
+            placeNumber.setVisibility(View.INVISIBLE);
+        }
+
+//////////////////////// end of set mobile number ///////////////////////////////////////
+
+////////////////////////  set place image //////////////////////////////////////////////
+        String imageURL = placeDetails.get(11).toString();
+        
+
+////////////////////////  end of set place image //////////////////////////////////////////////
+
 ////////////////////////////////////////////////  SET LIST VIEW  ////////////////////////////////////////
         db = new Database();
         ArrayList<ArrayList<String>> BigList = new ArrayList<>();
@@ -175,5 +201,6 @@ public class PlaceDetails extends AppCompatActivity {
         Toast.makeText(getBaseContext(), "Place saved", Toast.LENGTH_LONG).show();
 
     }
+
 
 }
