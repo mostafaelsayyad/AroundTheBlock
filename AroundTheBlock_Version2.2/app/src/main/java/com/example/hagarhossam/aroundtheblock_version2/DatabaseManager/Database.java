@@ -21,13 +21,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Struct;
 import java.util.ArrayList;
 
 public class Database {
 
 
     String resp;
-    String url = "http://10.0.2.2";
+    String url = "http://192.168.1.5";
     Boolean edit;
 
     String user_name;
@@ -37,6 +38,7 @@ public class Database {
     //review
     public ArrayList<ArrayList<String>> reviewsList;
     public ArrayList<ArrayList<String>> usersList;
+    public ArrayList<String> ratingList;
     //
 
     //non personalized recommender
@@ -59,6 +61,7 @@ public class Database {
         //review
         reviewsList = new ArrayList();// ArrayList for Review feature
         usersList = new ArrayList();
+        ratingList = new ArrayList();
         //
 
         //non personalized recommender
@@ -715,8 +718,8 @@ public class Database {
                         temp = array.getJSONArray(array.length() - 1);
                         System.out.println("denom is "+denomeratorScore +" " +temp.getString(2));
 
-                        numeratorScore+=(Integer.parseInt(temp.getString(1))*Integer.parseInt(temp.getString(2))); //star*rate
-                        denomeratorScore+=Integer.parseInt(temp.getString(2));
+                        numeratorScore+=(Float.parseFloat(temp.getString(1))*Float.parseFloat(temp.getString(2))); //star*rate
+                        denomeratorScore+=Float.parseFloat(temp.getString(2));
 
                         double score = numeratorScore/denomeratorScore;
 
@@ -725,7 +728,7 @@ public class Database {
 
 
                     } catch (JSONException e1) {
-                        e1.printStackTrace();
+                        //e1.printStackTrace();
                     }
                 }
 
@@ -1140,6 +1143,121 @@ public class Database {
         return resp;
     }
 
+    /////////////////////////////////////////////////////////Add rating  /////////////////////////////////////////////////////////////////
+    public Boolean addRating(final String email, final String placeId, final String rating)
+    {
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            .add("email", email)
+                            .add("placeId", placeId)
+                            .add("rating", rating)
+                            .build();
+                    Request request = new Request.Builder().url(url+"/AroundTheBlock/rating.php").post(body).build();
+                    Call call = client.newCall(request);
+                    call.enqueue(new Callback() {
+
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            System.out.println("Registration Error" + e.getMessage());
+                        }
+
+                        @Override
+                        public void onResponse(Response response) throws IOException {
+                            try {
+                                String resp = response.body().string();
+                                System.out.println(resp);
+
+                            } catch (IOException e) {
+                                // Log.e(TAG_REGISTER, "Exception caught: ", e);
+                                System.out.println("Exception caught" + e.getMessage());
+                            }
+                        }
+                    });
+
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+
+
+
+
+        return true;
+    }
+
+    /////////////////////////////////////////////////////////select rating  /////////////////////////////////////////////////////////////////
+    public ArrayList<String> selectRating( final String placeID)
+    {
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            // benefit #2, eni bab3t el userid, 3shan arg3o fil returnarray mn el php lel java, 3shan yb2a array wa7ed w 5las
+                            .add("placeID", placeID)
+                            .build();
+
+                    //192.168.1.5
+                    Request request = new Request.Builder().url(url+"/AroundTheBlock/selectrating.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
+
+                    Response response = client.newCall(request).execute();
+
+                    String jsonData = response.body().string();
+                    System.out.println("data hyaa fil places  "+jsonData);
+
+                    JSONObject rootObject = new JSONObject(jsonData);
+                    JSONArray array = rootObject.getJSONArray("ratings");
+
+                    for(int i=0;i<array.length();i++)
+                    {
+                        JSONArray array2 = array.getJSONArray(i);
+                        ArrayList<String> tempList = new ArrayList<>();
+                        for(int j=0;j<array2.length();j++)
+                        {
+                            //System.out.println("PLACES AAAARE "+array2.getString(j)+ " \n ");
+                            ratingList.add(array2.getString(j));
+                            //String name = array2.getString(0);
+                        }
+                    }
+
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+        return ratingList;
+    }
 }
 
 

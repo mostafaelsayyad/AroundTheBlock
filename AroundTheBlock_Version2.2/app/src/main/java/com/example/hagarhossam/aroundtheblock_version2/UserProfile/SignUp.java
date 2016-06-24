@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.hagarhossam.aroundtheblock_version2.DatabaseManager.Database;
@@ -20,15 +22,18 @@ public class SignUp extends AppCompatActivity {
     Button _signupButton;
     Database db;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
+
         _emailText = (EditText) findViewById(R.id.textEmail);
         _passwordText = (EditText) findViewById(R.id.textPassword);
         _signupButton = (Button) findViewById(R.id.buttonSignUp);
         _nameText = (EditText) findViewById(R.id.textName);
         db = new Database();
+
     }
 
     public void SignUpButtonClicked(View view)
@@ -36,6 +41,7 @@ public class SignUp extends AppCompatActivity {
         String email=_emailText.getText().toString();
         String passwrod=_passwordText.getText().toString();
         String name = _nameText.getText().toString();
+
 
 
         if (!validate()) {

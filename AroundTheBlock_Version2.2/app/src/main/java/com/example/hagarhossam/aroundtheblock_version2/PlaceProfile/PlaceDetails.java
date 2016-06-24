@@ -10,10 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hagarhossam.aroundtheblock_version2.DatabaseManager.Database;
+import com.example.hagarhossam.aroundtheblock_version2.ListView.Helper;
 import com.example.hagarhossam.aroundtheblock_version2.NavigationMainActivity;
 import com.example.hagarhossam.aroundtheblock_version2.R;
 
@@ -29,11 +31,15 @@ public class PlaceDetails extends AppCompatActivity {
     String email;
     String placeId;
     EditText mEdit;
+    RatingBar rating_b; // Rating
     TextView placeName;
     TextView placeAddress;
     ArrayList placeDetails = new ArrayList();
     Button buttonSubmit;
     Button savePlace;
+    ArrayList<String> ratingList;
+    ArrayList<ArrayList<String>> newBigList;
+
     String result; // Save place
 
 
@@ -48,6 +54,8 @@ public class PlaceDetails extends AppCompatActivity {
         //get The arraylist from Searched places that have the details of the place
         Intent intent = getIntent();
         placeDetails = intent.getStringArrayListExtra("placeDetails");
+
+        rating_b = (RatingBar) findViewById(R.id.ratingBar);
 
         placeName = (TextView)findViewById(R.id.place_name);
         placeAddress = (TextView)findViewById(R.id.place_address);
@@ -69,16 +77,41 @@ public class PlaceDetails extends AppCompatActivity {
 
         //userId = "mostafa.elsayad@hotmail.com";
        // placeId = "2";
-
+////////////////////////////////////////////////  SET LIST VIEW  ////////////////////////////////////////
         db = new Database();
         ArrayList<ArrayList<String>> BigList = new ArrayList<>();
-        BigList = db.selectReviews( placeId);
-        System.out.println("Big list is "+BigList);
+        ratingList = new ArrayList<>();
+        BigList = db.selectReviews(placeId);
+        ratingList = db.selectRating(placeId);
+        System.out.println("rating list isss... "+ratingList);
 
-        ListAdapter buckysAdaptor = new ReviewCustomAdaptor(this, BigList);
+        newBigList = new ArrayList<>();
+
+        if(ratingList.size() !=0)//y3ni feh rating w review, fa display them.. el condition da 3shan bydrb
+        {
+            for (int i = 0; i < BigList.size(); i++)
+            {
+                ArrayList<String> tempList = new ArrayList<>();
+
+                for (int j = 0; j < BigList.get(i).size(); j++)
+                {
+                    tempList.add(BigList.get(i).get(j));
+                }
+
+
+                tempList.add(ratingList.get(i));
+
+                newBigList.add(tempList);
+            }
+        }
+
+        System.out.println("NEW Big list is "+newBigList);
+
+        ListAdapter buckysAdaptor = new ReviewCustomAdaptor(this, newBigList);
 
         ListView buckysListView = (ListView) findViewById(R.id.listView);
         buckysListView.setAdapter(buckysAdaptor);
+        Helper.getListViewSize(buckysListView);
 
         if (email == "") {
 
@@ -99,16 +132,21 @@ public class PlaceDetails extends AppCompatActivity {
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String formattedDate = df.format(c.getTime());
-
         String review = mEdit.getText().toString();
+        System.out.println("REVIEW "+review);
 
-        db.insertReview(email, placeId, review, formattedDate);
 
+        if(String.valueOf(rating_b.getRating())!="0.0" && !review.equals("")){
+            db.insertReview(email, placeId, review, formattedDate);
+            Boolean result = db.addRating(email, placeId,String.valueOf(rating_b.getRating()));
+        }
+
+        else{
+            Toast.makeText(PlaceDetails.this, "Rating and Review must be given", Toast.LENGTH_LONG).show();
+        }
         finish();
         startActivity(getIntent());
 
-        Toast.makeText(PlaceDetails.this, "Review has been submitted",
-                Toast.LENGTH_SHORT).show();
 
     }
 

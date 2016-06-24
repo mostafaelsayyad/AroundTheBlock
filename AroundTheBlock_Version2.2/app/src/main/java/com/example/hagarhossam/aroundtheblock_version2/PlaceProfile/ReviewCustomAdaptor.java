@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.hagarhossam.aroundtheblock_version2.R;
@@ -33,16 +34,18 @@ public class ReviewCustomAdaptor extends ArrayAdapter
         TextView emailText = (TextView) customView.findViewById(R.id.emailText);
         TextView dateText = (TextView) customView.findViewById(R.id.dateText);
         TextView reviewText = (TextView) customView.findViewById(R.id.reviewText);
+        RatingBar place_rating= (RatingBar)customView.findViewById(R.id.place_rating);
 
 
         for(int i=0;i<item.size();i++)
         {
-            System.out.println("yarab " +item.get(i));
+            System.out.println("yarab " + item.get(i));
 
             emailText.setText(item.get(i)); //will iterate over array already defined
             dateText.setText(item.get(i+1));
-            reviewText.setText(item.get(i+2));
-            i+=2;
+            reviewText.setText(item.get(i + 2));
+            place_rating.setRating(Float.parseFloat(item.get(i + 3)));
+            i+=3;
 
         }
 

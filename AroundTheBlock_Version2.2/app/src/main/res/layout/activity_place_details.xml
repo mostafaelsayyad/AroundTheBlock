@@ -94,7 +94,13 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp">
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar" />
 
             <EditText
                 android:inputType="textMultiLine"
@@ -106,7 +112,7 @@
                 android:scrollbars="vertical"
                 android:hint="write your review"
                 android:id="@+id/reviewIDText"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="0dp"
                 android:textSize="15dp" />
 
             <Button
@@ -126,8 +132,10 @@
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:id="@+id/listView" />
+                android:layout_height="50dp"
+                android:id="@+id/listView"
+                android:layout_weight="1"/>
+
         </LinearLayout>
 
 
