@@ -28,7 +28,7 @@ public class Database {
 
 
     String resp;
-    String url = "http://192.168.1.5";
+    String url = "http://10.0.2.2";
     Boolean edit;
 
     String user_name;
@@ -1258,6 +1258,63 @@ public class Database {
 
         return ratingList;
     }
+    public String DeleteAccount(final String email)
+    {
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            .add("email", email)
+                            .build();
+                    Request request = new Request.Builder().url(url+"/AroundTheBlock/DeleteAccount.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/signup.php").post(body).build();
+                    Call call = client.newCall(request);
+                    call.enqueue(new Callback() {
+
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            System.out.println("Registration Error" + e.getMessage());
+                        }
+
+                        @Override
+                        public void onResponse(Response response) throws IOException {
+                            try {
+                                String resp = response.body().string();
+                                edit =true;
+                                System.out.println(resp);
+
+                            } catch (Exception e) {
+                                // Log.e(TAG_REGISTER, "Exception caught: ", e);
+                                System.out.println("Exception caught" + e.getMessage());
+                            }
+                        }
+                    });
+
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        } catch (Exception e) {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+        return resp;
+    }
+
+
+
+
+
 }
 
 

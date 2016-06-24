@@ -265,10 +265,7 @@ public class NavigationMainActivity extends ActionBarActivity {
 
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
-            case R.id.menu_option_1:
-                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
-                        .show();
-                break;
+
             // action with ID action_settings was selected
             case R.id.menu_option_2:
                 Toast.makeText(this, "Profile selected", Toast.LENGTH_SHORT).show();

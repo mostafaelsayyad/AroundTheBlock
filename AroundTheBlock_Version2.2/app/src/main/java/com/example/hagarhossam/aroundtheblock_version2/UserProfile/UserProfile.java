@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,9 @@ public class UserProfile extends ActionBarActivity {
 
 
     Database db ;
+    TextView textView; // Username text
+    ImageView profileImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,11 @@ public class UserProfile extends ActionBarActivity {
         final String user_name = sharedPreferences.getString("name", "");
         final String email = sharedPreferences.getString("email", "");
 
-        TextView textView = (TextView) findViewById(R.id.txtEmail);
+        textView = (TextView) findViewById(R.id.txtEmail);
         textView.setText( user_name );
+
+        profileImage = (ImageView) findViewById(R.id.imageView);
+        profileImage.setImageResource(R.drawable.usersss);
 
     }
 
@@ -84,4 +91,22 @@ public class UserProfile extends ActionBarActivity {
         Intent intent = new Intent(UserProfile.this, NavigationMainActivity.class);//mfrood mn place profile l place profile w 5alas kda 5eles el recommendation
         startActivity(intent);
     }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    public void onDeleteAccount(View view){
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        final String email = sharedPreferences.getString("email", "");
+        editor.clear();
+        editor.commit();
+        String result = db.DeleteAccount(email);
+        Toast.makeText(this, "Account is deleted", Toast.LENGTH_LONG).show();
+        Intent DeleteAcoountIntent = new Intent(this, NavigationMainActivity.class);
+        startActivity(DeleteAcoountIntent);
+
+
+    }
 }
+

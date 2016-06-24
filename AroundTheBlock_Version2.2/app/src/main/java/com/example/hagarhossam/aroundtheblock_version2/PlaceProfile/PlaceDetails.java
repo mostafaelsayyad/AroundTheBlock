@@ -22,6 +22,7 @@ import com.example.hagarhossam.aroundtheblock_version2.DatabaseManager.Database;
 import com.example.hagarhossam.aroundtheblock_version2.ListView.Helper;
 import com.example.hagarhossam.aroundtheblock_version2.NavigationMainActivity;
 import com.example.hagarhossam.aroundtheblock_version2.R;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -99,7 +100,15 @@ public class PlaceDetails extends AppCompatActivity {
 
 ////////////////////////  set place image //////////////////////////////////////////////
         String imageURL = placeDetails.get(11).toString();
-        
+
+        System.out.println("THE URRL "+imageURL);
+
+        if (imageURL.contains("http://")) {
+
+            System.out.println("DA5LTT EL IF");
+            Picasso.with(getApplicationContext()).load(imageURL).into(placeImage);
+        }
+
 
 ////////////////////////  end of set place image //////////////////////////////////////////////
 
