@@ -22,6 +22,7 @@ public class SearchedPlaces extends AppCompatActivity  {
 
     private Database db;
     ListView _searchedPlaces;
+    String searchText = "";
 
 
     private String userLat = "30.034645";
@@ -36,12 +37,13 @@ public class SearchedPlaces extends AppCompatActivity  {
 
         _searchedPlaces = (ListView) findViewById(R.id.searchedPlaces);
 
+        Intent intent = getIntent();
+        searchText = intent.getExtras().getString("searchText");
+
         db = new Database();
         SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         final String email = sharedPreferences.getString("email", "");
 
-        Intent intent = getIntent();
-        String searchText = intent.getExtras().getString("searchText");
 
 
 
@@ -107,7 +109,9 @@ public class SearchedPlaces extends AppCompatActivity  {
     public void onNearbyButton(View view){
 
         Intent nearby = new Intent(this, NearbySearch.class);
+        nearby.putExtra("searchText", searchText);
         startActivity(nearby);
+
     }
 
     }

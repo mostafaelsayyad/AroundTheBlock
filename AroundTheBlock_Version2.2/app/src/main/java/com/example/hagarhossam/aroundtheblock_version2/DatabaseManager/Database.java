@@ -34,7 +34,9 @@ public class Database {
     String user_name;
     ArrayList<String> navigateList = new ArrayList<>();
 
-    public ArrayList<ArrayList<String>> searchList;
+    ArrayList<ArrayList<String>> nearbyPlaces;
+    ArrayList<ArrayList<String>> searchList;
+
     //review
     public ArrayList<ArrayList<String>> reviewsList;
     public ArrayList<ArrayList<String>> usersList;
@@ -61,6 +63,7 @@ public class Database {
         user_name ="";
 
         searchList = new ArrayList();
+        nearbyPlaces = new ArrayList();
         //review
         reviewsList = new ArrayList();// ArrayList for Review feature
         usersList = new ArrayList();
@@ -1318,7 +1321,7 @@ public class Database {
 
     ///////////////////////////////////////////// Search by near by ///////////////////////////////////////////////////
 
-    public ArrayList<ArrayList<String>> searchNearby( final String email, final String userLat, final String userLong )
+    public  ArrayList<ArrayList<String>> searchNearby(final String latitude, final String longitude,final String searchText)
     {
         Thread thread = new Thread(new Runnable(){
             @Override
@@ -1326,10 +1329,9 @@ public class Database {
                 try {
                     OkHttpClient client = new OkHttpClient();
                     RequestBody body = new FormEncodingBuilder()
-                            // benefit #2, eni bab3t el userid, 3shan arg3o fil returnarray mn el php lel java, 3shan yb2a array wa7ed w 5las
-                            .add("email", email)
-                            .add("userLat",userLat)
-                            .add("userLong", userLong)
+                            .add("latitude",latitude)
+                            .add("longitude",longitude)
+                            .add("searchText", searchText) // benefit #2, eni bab3t el userid, 3shan arg3o fil returnarray mn el php lel java, 3shan yb2a array wa7ed w 5las
                             .build();
 
                     //192.168.1.5
@@ -1342,7 +1344,7 @@ public class Database {
                     System.out.println("data hyaa fil places  "+jsonData);
 
                     JSONObject rootObject = new JSONObject(jsonData);
-                    JSONArray array = rootObject.getJSONArray("nearby");
+                    JSONArray array = rootObject.getJSONArray("places");
 
                     for(int i=0;i<array.length();i++)
                     {
@@ -1354,7 +1356,7 @@ public class Database {
                             tempList.add(array2.getString(j));
                             //String name = array2.getString(0);
                         }
-                        reviewsList.add(tempList);
+                        nearbyPlaces.add(tempList);
                     }
 
                 }catch(Exception e)
@@ -1374,9 +1376,8 @@ public class Database {
             System.out.println("errrrrrrrrrrror in thread");
         }
 
-        return nearby;
+        return nearbyPlaces;
     }
-
 
 }
 
