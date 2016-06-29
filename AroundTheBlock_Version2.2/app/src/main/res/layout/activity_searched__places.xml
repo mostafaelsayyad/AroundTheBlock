@@ -8,12 +8,27 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Search.SearchedPlaces">
+    tools:context=".Search.SearchedPlaces"
+    android:clickable="false">
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="450dp"
         android:id="@+id/searchedPlaces"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Refine by Nearby"
+        android:id="@+id/nearbySearch"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:textColor="#3f51b4"
+        android:textIsSelectable="false"
+        android:onClick="onNearbyButton" />
+
 </RelativeLayout>

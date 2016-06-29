@@ -28,7 +28,7 @@ public class Database {
 
 
     String resp;
-    String url = "http://10.0.2.2";
+    String url = "http://192.168.1.7";
     Boolean edit;
 
     String user_name;
@@ -39,6 +39,9 @@ public class Database {
     public ArrayList<ArrayList<String>> reviewsList;
     public ArrayList<ArrayList<String>> usersList;
     public ArrayList<String> ratingList;
+
+    // search nearby
+    public ArrayList<ArrayList<String>> nearby;
     //
 
     //non personalized recommender
@@ -1258,6 +1261,8 @@ public class Database {
 
         return ratingList;
     }
+
+
     public String DeleteAccount(final String email)
     {
 
@@ -1311,8 +1316,66 @@ public class Database {
         return resp;
     }
 
+    ///////////////////////////////////////////// Search by near by ///////////////////////////////////////////////////
 
+    public ArrayList<ArrayList<String>> searchNearby( final String email, final String userLat, final String userLong )
+    {
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormEncodingBuilder()
+                            // benefit #2, eni bab3t el userid, 3shan arg3o fil returnarray mn el php lel java, 3shan yb2a array wa7ed w 5las
+                            .add("email", email)
+                            .add("userLat",userLat)
+                            .add("userLong", userLong)
+                            .build();
 
+                    //192.168.1.5
+                    Request request = new Request.Builder().url(url+"/AroundTheBlock/searchNearby.php").post(body).build();
+                    //Request request = new Request.Builder().url("http://invortions.site40.net/AroundTheBlock/selectplacedetailsgivenname.php").post(body).build();
+
+                    Response response = client.newCall(request).execute();
+
+                    String jsonData = response.body().string();
+                    System.out.println("data hyaa fil places  "+jsonData);
+
+                    JSONObject rootObject = new JSONObject(jsonData);
+                    JSONArray array = rootObject.getJSONArray("nearby");
+
+                    for(int i=0;i<array.length();i++)
+                    {
+                        JSONArray array2 = array.getJSONArray(i);
+                        ArrayList<String> tempList = new ArrayList<>();
+                        for(int j=0;j<array2.length();j++)
+                        {
+                            //System.out.println("PLACES AAAARE "+array2.getString(j)+ " \n ");
+                            tempList.add(array2.getString(j));
+                            //String name = array2.getString(0);
+                        }
+                        reviewsList.add(tempList);
+                    }
+
+                }catch(Exception e)
+                {
+                    System.out.println("FIL FUNCTION errroros hwa "+e);
+                }
+
+            }
+        });
+
+        try {
+            thread.start();
+            thread.join();
+        }
+        catch (Exception e)
+        {
+            System.out.println("errrrrrrrrrrror in thread");
+        }
+
+        return nearby;
+    }
 
 
 }

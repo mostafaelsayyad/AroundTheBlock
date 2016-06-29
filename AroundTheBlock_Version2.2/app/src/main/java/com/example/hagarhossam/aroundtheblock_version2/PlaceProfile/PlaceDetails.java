@@ -207,6 +207,9 @@ public class PlaceDetails extends AppCompatActivity {
     public void onSavePlaceButton(View view){
 
         result = db.savePlace(email,placeId);
+        if(result.contains("Duplicate")){
+            Toast.makeText(getBaseContext(), "Place is already saved", Toast.LENGTH_LONG).show();
+        }
         Toast.makeText(getBaseContext(), "Place saved", Toast.LENGTH_LONG).show();
 
     }

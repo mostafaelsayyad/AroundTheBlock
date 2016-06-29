@@ -8,23 +8,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.hagarhossam.aroundtheblock_version2.DatabaseManager.Database;
 import com.example.hagarhossam.aroundtheblock_version2.PlaceProfile.PlaceDetails;
 import com.example.hagarhossam.aroundtheblock_version2.R;
-import com.example.hagarhossam.aroundtheblock_version2.UserProfile.placeCustomAdaptor;
 
 import java.util.ArrayList;
 
-public class SearchedPlaces extends AppCompatActivity {
+public class SearchedPlaces extends AppCompatActivity  {
 
 
     private Database db;
     ListView _searchedPlaces;
+
+
+    private String userLat = "30.034645";
+    private  String userLon = "31.210127";
+
 
 
     @Override
@@ -32,39 +34,46 @@ public class SearchedPlaces extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searched__places);
 
-        _searchedPlaces = (ListView)findViewById(R.id.searchedPlaces);
-        db= new Database();
+        _searchedPlaces = (ListView) findViewById(R.id.searchedPlaces);
+
+        db = new Database();
         SharedPreferences sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         final String email = sharedPreferences.getString("email", "");
-
 
         Intent intent = getIntent();
         String searchText = intent.getExtras().getString("searchText");
 
-//////////////////////////////////Search for the entered search /////////////////////////////////
+
+
         ArrayList<ArrayList<String>> BigList = new ArrayList<>();
 
-        BigList = db.selectPlacesNameInSearchBar(searchText);
-        System.out.println("Big list is "+BigList);
 
-        if(BigList.size()==0){
+        //////////////////////////////////Search for the entered search /////////////////////////////////
+
+
+        BigList = db.selectPlacesNameInSearchBar(searchText);
+        System.out.println("Big list is " + BigList);
+
+        if (BigList.size() == 0) {
 
 
         }
 
         ListAdapter buckysAdaptor = new SearchCustomAdaptor(this, BigList);
-        System.out.println("LIST ABAPTER is "+buckysAdaptor);
+        System.out.println("LIST ABAPTER is " + buckysAdaptor);
 
         ListView buckysListView = (ListView) findViewById(R.id.searchedPlaces);
         buckysListView.setAdapter(buckysAdaptor);
+
+
+        //////////////////////////////////Search by near by/////////////////////////////////
 
 
         //////////////////////////////////Select place from List /////////////////////////////////
 
 
         ArrayList tempList = new ArrayList();
-        for(int i=0;i<BigList.size();i++)
-        {
+        for (int i = 0; i < BigList.size(); i++) {
             tempList.add(BigList.get(i).get(0));
         }
 
@@ -95,6 +104,11 @@ public class SearchedPlaces extends AppCompatActivity {
 
     }
 
+    public void onNearbyButton(View view){
+
+        Intent nearby = new Intent(this, NearbySearch.class);
+        startActivity(nearby);
+    }
 
     }
 
